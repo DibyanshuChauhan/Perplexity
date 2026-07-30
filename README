@@ -1,0 +1,563 @@
+<div align="center">
+
+# 🤖 Perplexity AI
+
+### An AI-powered intelligent chat assistant with real-time web search, Gmail integration, and autonomous email capabilities.
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react" />
+  <img src="https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite" />
+  <img src="https://img.shields.io/badge/Redux-Toolkit-764ABC?style=for-the-badge&logo=redux" />
+  <img src="https://img.shields.io/badge/TailwindCSS-4-38B2AC?style=for-the-badge&logo=tailwindcss" />
+  <img src="https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js" />
+  <img src="https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Mistral-AI-orange?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Tavily-AI-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Gmail-API-EA4335?style=for-the-badge&logo=gmail" />
+  <img src="https://img.shields.io/badge/Nodemailer-Email-0F9D58?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge" />
+</p>
+
+---
+
+### 🚀 AI Chat • 🌐 Internet Search • 📧 Gmail Integration • 🤖 Autonomous Email Assistant
+
+</div>
+
+---
+
+# 📖 Overview
+
+**Perplexity AI** is a full-stack AI-powered chat application that combines the reasoning capabilities of **Mistral AI**, real-time internet access using **Tavily AI**, and Gmail integration through **Google OAuth + Nodemailer**.
+
+Unlike a traditional chatbot, Perplexity AI can:
+
+- 💬 Hold contextual conversations
+- 🌐 Search the internet before answering
+- 📧 Verify Gmail accounts securely
+- ✉️ Send emails on behalf of authenticated users
+- 🧠 Decide when internet search is required
+- ⚡ Stream AI responses with typing animations
+- 📂 Manage multiple chat sessions
+
+---
+
+# ✨ Features
+
+## 🤖 AI Features
+
+- Mistral AI powered conversations
+- Intelligent response generation
+- Context-aware conversations
+- AI Thinking Indicator
+- Typing Animation Effect
+- Multiple chat sessions
+- Persistent chat history
+
+---
+
+## 🌍 Internet Access
+
+Integrated with **Tavily AI**, allowing the AI model to search the web whenever additional information is required.
+
+Features include:
+
+- Real-time web search
+- Latest news retrieval
+- Current events
+- Research assistance
+- Fact verification
+
+---
+
+## 📧 Gmail Integration
+
+Users authenticate using their Gmail account.
+
+The application securely stores OAuth credentials allowing the AI assistant to send emails **on behalf of the user**.
+
+Features:
+
+- Gmail OAuth Authentication
+- Secure Token Storage
+- Email Verification
+- AI Generated Emails
+- AI Sends Emails Automatically
+- Personalized Email Drafts
+
+---
+
+## 💬 Chat Features
+
+- Sidebar Chat Navigation
+- Create New Chats
+- Switch Between Chats
+- Persistent Chat History
+- Loading States
+- AI Thinking Animation
+- Smooth Typing Effect
+- Responsive Dashboard
+
+---
+
+## 🎨 User Experience
+
+- Beautiful Modern UI
+- Responsive Design
+- Toast Notifications
+- Redux State Management
+- Tailwind CSS Styling
+- Fast Vite Development
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
+- React
+- Vite
+- Redux Toolkit
+- Tailwind CSS
+- Axios
+- React Router
+- React Toastify
+
+---
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+
+---
+
+## AI Services
+
+- Mistral AI
+- Tavily AI
+
+---
+
+## Email Services
+
+- Gmail API
+- Google OAuth2
+- Nodemailer
+
+---
+
+# 📂 Project Structure
+
+```text
+Perplexity/
+│
+├── Backend/
+│   ├── node_modules/
+│   ├── public/
+│   ├── src/
+│   │   ├── config/           # Database & application configuration
+│   │   ├── controllers/      # Business logic
+│   │   ├── middlewares/      # Authentication & request middlewares
+│   │   ├── models/           # Mongoose models
+│   │   ├── routes/           # Express API routes
+│   │   ├── services/         # AI, Gmail & external service integrations
+│   │   ├── validators/       # Request validation schemas
+│   │   └── app.js            # Express application
+│   │
+│   ├── .env
+│   ├── .gitignore
+│   ├── package.json
+│   ├── package-lock.json
+│   └── server.js             # Backend entry point
+│
+├── FrontEnd/
+│   ├── node_modules/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/       # Reusable UI components
+│   │   ├── hooks/            # Custom React hooks
+│   │   ├── layouts/          # Application layouts
+│   │   ├── pages/            # Application pages
+│   │   ├── redux/            # Redux Toolkit store & slices
+│   │   ├── routes/           # React Router configuration
+│   │   ├── services/         # API communication
+│   │   ├── utils/            # Helper utilities
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── .gitignore
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── README.md
+│   └── vite.config.js
+│
+└── README.md
+```
+
+---
+
+# ⚙️ Installation
+
+## 1 Clone Repository
+
+```bash
+git clone https://github.com/DibyanshuChauhan/Perplexity.git
+```
+
+```bash
+cd Perplexity
+```
+
+---
+
+## 2 Install Backend Dependencies
+
+```bash
+cd Backend
+
+npm install
+```
+
+---
+
+## 3 Install Frontend Dependencies
+
+```bash
+cd ../FrontEnd
+
+npm install
+```
+
+---
+
+# 🔐 Environment Variables
+
+Create a `.env` file inside the **Backend** directory and add the following variables.
+
+```env
+# ===============================
+# Database Configuration
+# ===============================
+MONGO_URI=your_mongodb_connection_string
+
+# ===============================
+# Server Configuration
+# ===============================
+PORT=3000
+NODE_ENV=development
+
+# ===============================
+# JWT Authentication
+# ===============================
+JWT_SECRET=your_super_secret_jwt_key
+
+# ===============================
+# AI Services
+# ===============================
+MISTRAL_API_KEY=your_mistral_api_key
+TAVILY_API_KEY=your_tavily_api_key
+GEMINI_API_KEY=your_gemini_api_key    # Optional
+
+# ===============================
+# Gmail OAuth Configuration
+# ===============================
+GOOGLE_USER=your_email@gmail.com
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REFRESH_TOKEN=your_google_refresh_token
+```
+
+---
+
+# 📖 Environment Variables Explained
+
+| Variable | Description |
+|----------|-------------|
+| `MONGO_URI` | MongoDB Atlas connection string. |
+| `PORT` | Port on which the backend server runs. |
+| `NODE_ENV` | Application environment (`development` or `production`). |
+| `JWT_SECRET` | Secret key used to sign JWT authentication tokens. |
+| `MISTRAL_API_KEY` | API key used for generating AI responses via Mistral AI. |
+| `TAVILY_API_KEY` | API key enabling real-time internet search through Tavily AI. |
+| `GEMINI_API_KEY` | Optional Google Gemini API key for future AI integrations. |
+| `GOOGLE_USER` | Gmail account used for sending emails. |
+| `GOOGLE_CLIENT_ID` | OAuth Client ID obtained from Google Cloud Console. |
+| `GOOGLE_CLIENT_SECRET` | OAuth Client Secret obtained from Google Cloud Console. |
+| `GOOGLE_REFRESH_TOKEN` | Refresh token used by Nodemailer to send emails without requiring the user to log in again. |
+
+---
+
+# 📧 Generating Google OAuth Credentials
+
+To enable Gmail integration:
+
+### 1. Create a Google Cloud Project
+
+- Visit **Google Cloud Console**
+- Create a new project
+- Enable the **Gmail API**
+
+---
+
+### 2. Configure OAuth Consent Screen
+
+- Select **External**
+- Fill in the required application details
+- Add your Gmail account as a Test User
+
+---
+
+### 3. Create OAuth Credentials
+
+Create an **OAuth 2.0 Client ID** and copy:
+
+- Client ID
+- Client Secret
+
+---
+
+### 4. Generate a Refresh Token
+
+Visit:
+
+> https://developers.google.com/oauthplayground/
+
+Then:
+
+1. Click the ⚙️ **Settings** icon.
+2. Enable **Use your own OAuth credentials**.
+3. Paste your **Google Client ID** and **Client Secret**.
+4. Select the **Gmail API**.
+5. Authorize access with your Google account.
+6. Exchange the authorization code for tokens.
+7. Copy the generated **Refresh Token** into your `.env` file.
+
+---
+
+> **⚠️ Security Notice**
+>
+> Never commit your `.env` file or API keys to GitHub. Always add `.env` to your `.gitignore` to protect sensitive credentials.
+
+---
+
+# ▶️ Running the Project
+
+## Start Backend
+
+```bash
+cd Backend
+
+npm run dev
+```
+
+---
+
+## Start Frontend
+
+```bash
+cd FrontEnd
+
+npm run dev
+```
+
+---
+
+Visit
+
+```
+http://localhost:5173
+```
+
+---
+
+# 🔄 Application Workflow
+
+```text
+                    User
+                      │
+                      ▼
+             React Frontend
+                      │
+                      ▼
+               Express Backend
+                      │
+      ┌───────────────┼────────────────┐
+      ▼               ▼                ▼
+  Mistral AI      Tavily AI       Gmail OAuth
+      │               │                │
+      └───────────────┼────────────────┘
+                      ▼
+             Intelligent AI Response
+                      │
+                      ▼
+            Email Sent (If Required)
+```
+
+---
+
+# 🧠 AI Workflow
+
+```text
+User Message
+      │
+      ▼
+Backend receives prompt
+      │
+      ▼
+Mistral analyzes request
+      │
+      ├──────────────┐
+      │Need Internet?│
+      └──────┬───────┘
+             │Yes
+             ▼
+        Tavily Search
+             │
+             ▼
+ Search Results Returned
+             │
+             ▼
+ Mistral Generates Final Answer
+             │
+             ▼
+Display to User
+```
+
+---
+
+# 📧 Email Workflow
+
+```text
+User connects Gmail
+        │
+        ▼
+Google OAuth Verification
+        │
+        ▼
+Access Token Generated
+        │
+        ▼
+Encrypted Storage
+        │
+        ▼
+User asks AI to send email
+        │
+        ▼
+AI drafts email
+        │
+        ▼
+Nodemailer sends email
+        │
+        ▼
+Recipient receives email
+```
+
+---
+
+# 🚀 Latest Update
+
+## Added
+
+- ✅ Loader Component
+- ✅ Sidebar Navigation
+- ✅ Dashboard Chat Interface
+- ✅ Thinking Indicator
+- ✅ Typing Animation Effect
+- ✅ Custom useChat Hook
+- ✅ Email Integration Component
+- ✅ Chat API Service
+- ✅ Redux Store Configuration
+- ✅ Toast Notifications
+- ✅ Tailwind CSS Setup
+
+---
+
+## AI Improvements
+
+- 🤖 Integrated Mistral AI
+- 🌍 Connected Tavily AI for real-time internet access
+- 📧 Gmail OAuth Authentication
+- ✉️ AI can send emails on behalf of authenticated users
+- 🔐 Secure Gmail verification using Google OAuth + Nodemailer
+
+---
+
+---
+
+# 🔒 Security
+
+- JWT Authentication
+- Protected Routes
+- Google OAuth2 Authentication
+- Secure Access Tokens
+- Environment Variables
+- API Key Protection
+
+---
+
+# 📈 Future Improvements
+
+- Voice Conversations
+- Streaming Responses
+- Image Generation
+- File Upload Support
+- Conversation Export
+- AI Memory
+- Markdown Rendering
+- Code Syntax Highlighting
+- Multi-Model Support
+- Dark/Light Theme
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+
+2. Create a new branch
+
+```bash
+git checkout -b feature/your-feature
+```
+
+3. Commit changes
+
+```bash
+git commit -m "feat: add new feature"
+```
+
+4. Push branch
+
+```bash
+git push origin feature/your-feature
+```
+
+5. Open a Pull Request
+
+---
+
+# 📜 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+<div align="center">
+
+### ⭐ If you found this project useful, consider giving it a Star.
+
+**Built with ❤️ using React, Node.js, Mistral AI, Tavily AI and Gmail API**
+
+</div>
