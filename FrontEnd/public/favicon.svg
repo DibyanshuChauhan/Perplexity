@@ -1,0 +1,14 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="proGrad" x1="8" y1="12" x2="40" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+  </defs>
+  
+  <circle cx="24" cy="24" r="21" fill="none" stroke="url(#proGrad)" stroke-width="5"/>
+  
+  <!-- Stylish P / Lightning Symbol -->
+  <path d="M29 15L19 26H25L22 35L32 24H26L29 15Z" 
+        fill="#ffffff"/>
+</svg>

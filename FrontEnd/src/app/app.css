@@ -1,0 +1,24 @@
+/* Targets modern standard browsers */
+::-moz-selection {
+    background-color: rgba(45, 212, 191, 0.25);
+    /* Muted Teal background glow (match for teal-500/25) */
+    color: #ffffff;
+    /* Crisp white text for maximum readability */
+    text-shadow: 0 0 12px rgba(45, 212, 191, 0.4);
+}
+
+::selection {
+    background-color: rgba(45, 212, 191, 0.25);
+    /* Muted Teal background glow */
+    color: #ffffff;
+    /* Crisp white text */
+    text-shadow: 0 0 12px rgba(45, 212, 191, 0.4);
+    /* High-end sub-pixel illumination text glow */
+}
+
+input::selection,
+textarea::selection {
+    background-color: rgba(45, 212, 191, 0.4);
+    /* Slightly deeper contrast within text fields */
+    color: #ffffff;
+}
