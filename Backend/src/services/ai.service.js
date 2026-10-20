@@ -118,7 +118,7 @@ export async function generateResponse(messages) {
             If you don't know the answer, say you don't know. 
             
             - If the question requires up-to-date information, use the "searchInternet" tool.
-            - If the user asks you to send an email, compose a well-structured message body and trigger the "sendEmail" tool.
+            - If the user asks you to send an email, you MUST ALWAYS invoke the "sendEmail" tool with the recipient's email address, a clear subject line, and a comprehensive markdown body. Never merely output the draft in your text response without actually calling the "sendEmail" tool.
             - You can combine tools: if a user asks you to look something up and email it to them, first use "searchInternet", then use "sendEmail" with the compiled data.
         `),
         ...messages.map(msg => {
