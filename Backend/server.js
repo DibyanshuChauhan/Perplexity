@@ -4,7 +4,10 @@ import dns from "dns";
 import app from "./src/app.js";
 import connectToDb from "./src/config/db.js";
 
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
+// Avoid overriding container DNS in production (Render, Docker, etc.)
+if (process.env.NODE_ENV !== "production") {
+    dns.setServers(["8.8.8.8", "8.8.4.4"]);
+}
 
 const PORT = process.env.PORT || 3000;
 

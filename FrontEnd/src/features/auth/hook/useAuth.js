@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useDispatch } from "react-redux";
 import { login, register, getMe, logout, resendVerification } from "../service/auth.api";
 import { setUser, setLoading, setError, setAuthChecked, logoutSuccess, registerSuccess } from "../auth.slice";

@@ -58,8 +58,6 @@ const Login = () => {
         navigate("/");
       }, 1600);
     } catch (error) {
-  console.log("ERROR DATA:", error.response?.data);
-
   navigate("/resend-verification", {
     state: {
       email,

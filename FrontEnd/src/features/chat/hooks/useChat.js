@@ -3,12 +3,10 @@ import {
     getMessages,
     sendMessage,
     deleteChat,
-    
 } from "../service/chat.api";
 import {
     setChats,
     setCurrentChatId,
-    // setError,
     setLoading,
     createNewChat,
     addNewMessage,
