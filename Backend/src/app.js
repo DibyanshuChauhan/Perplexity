@@ -43,6 +43,14 @@ app.use(morgan("dev"));
 app.use(express.static(publicPath));
 
 // 2. Mount API Routes
+app.get(["/health", "/api/health"], (req, res) => {
+    res.status(200).json({
+        status: "ok",
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString()
+    });
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/chats", chatRouter);
 
