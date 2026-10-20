@@ -2,6 +2,10 @@ import userModel from "../models/user.model.js"
 import jwt from "jsonwebtoken"
 import { sendEmail } from "../services/mail.service.js"
 
+const getBaseUrl = (req) => {
+    return process.env.CLIENT_URL || process.env.RENDER_EXTERNAL_URL || process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
+};
+
 export const registerController = async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -33,6 +37,8 @@ export const registerController = async (req, res) => {
             email: newUser.email
         }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
+        const appBaseUrl = getBaseUrl(req);
+
         // 4. Dispatch the verification mail flow sequence
         await sendEmail({
             to: email,
@@ -49,7 +55,7 @@ export const registerController = async (req, res) => {
                         Please verify your email address by clicking the button below:
                     </p>
                     <a
-                        href="http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}"
+                        href="${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}"
                         style="
                             display:inline-block;
                             padding:12px 24px;
@@ -66,7 +72,7 @@ export const registerController = async (req, res) => {
                         Or copy and paste this link into your browser:
                     </p>
                     <p>
-                        http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}
+                        ${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}
                     </p>
                     <hr />
                     <p>
@@ -130,6 +136,8 @@ export const verifyEmail = async (req, res) => {
             });
         }
         
+        const appBaseUrl = getBaseUrl(req);
+
         if (user.verified) {
             const alreadyVerifiedHtml = `
                 <div style="max-width:600px; margin:40px auto; padding:32px; border:1px solid #e5e7eb; border-radius:8px; font-family:Arial, Helvetica, sans-serif; color:#374151; line-height:1.6;">
@@ -149,7 +157,7 @@ export const verifyEmail = async (req, res) => {
                     </p>
 
                     <a
-                        href="http://localhost:3000/login"
+                        href="${appBaseUrl}/login"
                         style="
                             display:inline-block;
                             margin:24px 0;
@@ -200,7 +208,7 @@ export const verifyEmail = async (req, res) => {
                 </p>
 
                 <a
-                    href="http://localhost:5173/login"
+                    href="${appBaseUrl}/login"
                     style="
                         display:inline-block;
                         margin:24px 0;
@@ -301,7 +309,9 @@ export const loginController = async (req, res) => {
 
         // 6. Set cookie and send back the payload
         res.cookie("token", token, {
-            httpOnly: true, // Recommended for security against XSS
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
         });
 
@@ -413,6 +423,8 @@ export const resendVerificationEmail = async (req, res) => {
             email: user.email
         }, process.env.JWT_SECRET, { expiresIn: "1h" }); // Good practice to give it an expiry time
 
+        const appBaseUrl = getBaseUrl(req);
+
         // 4. Send verification email
         await sendEmail({
             to: user.email,
@@ -432,7 +444,7 @@ export const resendVerificationEmail = async (req, res) => {
                     </p>
 
                     <a
-                        href="http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}"
+                        href="${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}"
                         style="
                             display:inline-block;
                             padding:12px 24px;
@@ -451,7 +463,7 @@ export const resendVerificationEmail = async (req, res) => {
                     </p>
 
                     <p>
-                        http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}
+                        ${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}
                     </p>
 
                     <hr />

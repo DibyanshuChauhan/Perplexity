@@ -1,0 +1,16 @@
+{
+  "name": "perplexity-ai",
+  "version": "1.0.0",
+  "description": "Perplexity AI - Intelligent Assistant with Live Search & Email Automation",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix Backend && npm install --prefix FrontEnd",
+    "build": "npm install --prefix Backend && npm install --prefix FrontEnd && npm run build --prefix FrontEnd",
+    "start": "npm start --prefix Backend",
+    "dev:backend": "npm run dev --prefix Backend",
+    "dev:frontend": "npm run dev --prefix FrontEnd"
+  },
+  "keywords": ["ai", "perplexity", "langchain", "mistral", "tavily", "react", "express"],
+  "author": "Dibyanshu Chauhan",
+  "license": "MIT"
+}

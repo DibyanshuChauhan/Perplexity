@@ -6,10 +6,10 @@ import { searchInternet } from "./internet.service.js";
 import { sendEmail } from "./mail.service.js";
 import { marked } from "marked";
 
-const mistralModel = new ChatMistralAI({
+const mistralModel = process.env.MISTRAL_API_KEY ? new ChatMistralAI({
     model: process.env.MISTRAL_MODEL || "open-mistral-7b",
     apiKey: process.env.MISTRAL_API_KEY
-});
+}) : null;
 
 const geminiModel = process.env.GEMINI_API_KEY ? new ChatGoogleGenerativeAI({
     model: process.env.GEMINI_MODEL || "gemini-2.5-flash-lite",
@@ -98,10 +98,10 @@ const sendEmailTool = tool(
     }
 );
 
-const mistralAgent = createAgent({
+const mistralAgent = mistralModel ? createAgent({
     model: mistralModel,
     tools: [ searchInternetTool, sendEmailTool ]
-});
+}) : null;
 
 const geminiAgent = geminiModel ? createAgent({
     model: geminiModel,
@@ -132,17 +132,22 @@ export async function generateResponse(messages) {
     ];
 
     let response;
-    try {
-        // Primary agent execution using Mistral model
-        response = await mistralAgent.invoke({ messages: formattedMessages });
-    } catch (primaryErr) {
-        console.warn("Mistral agent invocation failed:", primaryErr.message);
-        if (geminiAgent) {
-            console.log("Attempting fallback with Gemini...");
-            response = await geminiAgent.invoke({ messages: formattedMessages });
-        } else {
-            throw primaryErr;
+    if (mistralAgent) {
+        try {
+            response = await mistralAgent.invoke({ messages: formattedMessages });
+        } catch (primaryErr) {
+            console.warn("Mistral agent invocation failed:", primaryErr.message);
+            if (geminiAgent) {
+                console.log("Attempting fallback with Gemini...");
+                response = await geminiAgent.invoke({ messages: formattedMessages });
+            } else {
+                throw primaryErr;
+            }
         }
+    } else if (geminiAgent) {
+        response = await geminiAgent.invoke({ messages: formattedMessages });
+    } else {
+        throw new Error("No AI model provider configured (MISTRAL_API_KEY or GEMINI_API_KEY).");
     }
 
     // Return structured text interface alongside dynamic email tracking states
@@ -159,19 +164,31 @@ export const generateChatTitle = async (message) => {
         new HumanMessage(`Generate a title for a chat conversation based on the following first message: "${message}"`)
     ];
 
-    try {
-        const response = await mistralModel.invoke(promptMessages);
-        return response.text?.trim() || "New Chat";
-    } catch (err) {
-        console.warn("Mistral title generation failed:", err.message);
-        if (geminiModel) {
-            try {
-                const response = await geminiModel.invoke(promptMessages);
-                return response.text?.trim() || "New Chat";
-            } catch (geminiErr) {
-                console.error("Gemini title fallback also failed:", geminiErr.message);
+    if (mistralModel) {
+        try {
+            const response = await mistralModel.invoke(promptMessages);
+            return response.text?.trim() || "New Chat";
+        } catch (err) {
+            console.warn("Mistral title generation failed:", err.message);
+            if (geminiModel) {
+                try {
+                    const response = await geminiModel.invoke(promptMessages);
+                    return response.text?.trim() || "New Chat";
+                } catch (geminiErr) {
+                    console.error("Gemini title fallback also failed:", geminiErr.message);
+                }
             }
+            return "New Chat";
         }
-        return "New Chat";
+    } else if (geminiModel) {
+        try {
+            const response = await geminiModel.invoke(promptMessages);
+            return response.text?.trim() || "New Chat";
+        } catch (err) {
+            console.error("Gemini title generation failed:", err.message);
+            return "New Chat";
+        }
     }
+
+    return "New Chat";
 }

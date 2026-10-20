@@ -1,9 +1,13 @@
 import axios from "axios";
 
+const baseURL = import.meta.env.VITE_API_URL 
+    ? `${import.meta.env.VITE_API_URL}/api/chats` 
+    : "/api/chats";
+
 const api = axios.create({
-    baseURL: "http://localhost:3000/api/chats",
+    baseURL,
     withCredentials: true
-})
+});
 
 export const sendMessage = async ({ message, chatId, chatType }) => {
     const response = await api.post("/message", {
