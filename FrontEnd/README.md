@@ -1,6 +1,12 @@
 # 🎨 Perplexity AI — Frontend Application
 
 <p align="center">
+  <a href="https://perplexity-3cxu.onrender.com/" target="_blank">
+    <img src="https://img.shields.io/badge/Live_App-perplexity--3cxu.onrender.com-00C7B7?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo" />
+  </a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/React-19.x-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19" />
   <img src="https://img.shields.io/badge/Vite-6.x-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
@@ -12,6 +18,8 @@
 ---
 
 ## 📌 Overview
+
+> 🌐 **Live Web App:** [https://perplexity-3cxu.onrender.com/](https://perplexity-3cxu.onrender.com/)
 
 The **Perplexity Frontend** is a modern Single Page Application (SPA) designed to deliver a snappy conversational search and task execution experience. Built with **React 19**, **Vite**, and **Tailwind CSS v4**, it couples state management via **Redux Toolkit** with micro-animations via **Framer Motion** to deliver a responsive, clean interface.
 

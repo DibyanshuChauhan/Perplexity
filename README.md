@@ -1,6 +1,13 @@
 # 🌐 Perplexity AI — Full-Stack Intelligent Assistant
 
 <p align="center">
+  <a href="https://perplexity-3cxu.onrender.com/" target="_blank">
+    <img src="https://img.shields.io/badge/Live_Demo-perplexity--3cxu.onrender.com-00C7B7?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo on Render" />
+  </a>
+  <img src="https://img.shields.io/badge/Deployment-Live_Production-success?style=for-the-badge" alt="Production Status" />
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19" />
   <img src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
@@ -16,6 +23,8 @@
 ---
 
 ## 📌 Executive Summary
+
+> 🚀 **Live Production URL:** [https://perplexity-3cxu.onrender.com/](https://perplexity-3cxu.onrender.com/)
 
 **Perplexity AI** is a production-ready, full-stack AI research and task automation platform inspired by Perplexity.ai. Going far beyond traditional chatbots, this platform combines **agentic LLM reasoning (Mistral AI / Google Gemini)**, **real-time live web indexing (Tavily AI)**, and **autonomous action execution (Google OAuth 2.0 + Nodemailer)** into an intuitive, responsive user interface.
 
@@ -211,41 +220,44 @@ http://localhost:5173
 ---
 
 ## 🌐 Deploying to Render (Unified Single Service)
-
-You can deploy both the Backend and Frontend together as a **single Web Service** on [Render](https://render.com/), avoiding CORS issues and eliminating the need to pay for or manage two separate hosting services.
-
-### Render Service Configuration
-
-1. **Push your code to GitHub.**
-2. In the [Render Dashboard](https://dashboard.render.com/), click **New +** → **Web Service**.
-3. Select and connect your repository (`Perplexity`).
-4. Fill in the service configuration:
-   - **Name:** `perplexity-ai` (or your preferred name)
-   - **Environment:** `Node`
-   - **Branch:** `main`
-   - **Root Directory:** *(leave blank — repository root)*
-   - **Build Command:** `npm run build`
-   - **Start Command:** `npm start`
-5. **Add Environment Variables** under the **Environment** tab:
-   - `NODE_ENV`: `production`
-   - `MONGO_URI`: `your_mongodb_connection_string`
-   - `JWT_SECRET`: `your_jwt_secret_key`
-   - `MISTRAL_API_KEY`: `your_mistral_api_key`
-   - `MISTRAL_MODEL`: `open-mistral-7b`
-   - `GEMINI_API_KEY`: `your_gemini_api_key` *(optional fallback)*
-   - `GEMINI_MODEL`: `gemini-2.5-flash-lite`
-   - `TAVILY_API_KEY`: `your_tavily_api_key`
-   - `GOOGLE_USER`: `your_email@gmail.com`
-   - `GOOGLE_CLIENT_ID`: `your_google_client_id`
-   - `GOOGLE_CLIENT_SECRET`: `your_google_client_secret`
-   - `GOOGLE_REFRESH_TOKEN`: `your_google_refresh_token`
-   - `BASE_URL`: `https://your-service-name.onrender.com` *(your live Render URL)*
-6. Click **Deploy Web Service**!
-
-> **How it works:**
-> - `npm run build` compiles Frontend into `Backend/public/`.
-> - Express in `Backend/src/app.js` serves static files and provides a SPA fallback (`app.get("{*splat}")`) so routes like `/login` or `/register` refresh seamlessly.
-> - Frontend API calls use relative paths (`/api/auth`, `/api/chats`), avoiding CORS configuration errors in production.
+ 
+ You can deploy both the Backend and Frontend together as a **single Web Service** on [Render](https://render.com/), avoiding CORS issues and eliminating the need to pay for or manage two separate hosting services.
+ 
+- **Production Instance:** [https://perplexity-3cxu.onrender.com/](https://perplexity-3cxu.onrender.com/)
+- **Repository Build Strategy:** Root build script compiling frontend into `Backend/public/` with Express SPA fallback.
+ 
+ ### Render Service Configuration
+ 
+ 1. **Push your code to GitHub.**
+ 2. In the [Render Dashboard](https://dashboard.render.com/), click **New +** → **Web Service**.
+ 3. Select and connect your repository (`Perplexity`).
+ 4. Fill in the service configuration:
+    - **Name:** `perplexity` (e.g. `perplexity-3cxu`)
+    - **Environment:** `Node`
+    - **Branch:** `main`
+    - **Root Directory:** *(leave blank — repository root)*
+    - **Build Command:** `npm run build`
+    - **Start Command:** `npm start`
+ 5. **Add Environment Variables** under the **Environment** tab:
+    - `NODE_ENV`: `production`
+    - `MONGO_URI`: `your_mongodb_connection_string`
+    - `JWT_SECRET`: `your_jwt_secret_key`
+    - `MISTRAL_API_KEY`: `your_mistral_api_key`
+    - `MISTRAL_MODEL`: `open-mistral-7b`
+    - `GEMINI_API_KEY`: `your_gemini_api_key` *(optional fallback)*
+    - `GEMINI_MODEL`: `gemini-2.5-flash-lite`
+    - `TAVILY_API_KEY`: `your_tavily_api_key`
+    - `GOOGLE_USER`: `your_email@gmail.com`
+    - `GOOGLE_CLIENT_ID`: `your_google_client_id`
+    - `GOOGLE_CLIENT_SECRET`: `your_google_client_secret`
+    - `GOOGLE_REFRESH_TOKEN`: `your_google_refresh_token`
+    - `BASE_URL`: `https://perplexity-3cxu.onrender.com` *(or your custom domain)*
+ 6. Click **Deploy Web Service**!
+ 
+ > **How it works:**
+ > - `npm run build` compiles Frontend into `Backend/public/`.
+ > - Express in `Backend/src/app.js` serves static files and provides a SPA fallback (`app.get("{*splat}")`) so routes like `/login` or `/register` refresh seamlessly.
+ > - Frontend API calls use relative paths (`/api/auth`, `/api/chats`), avoiding CORS configuration errors in production.
 
 ---
 
