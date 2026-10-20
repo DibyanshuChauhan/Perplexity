@@ -62,7 +62,15 @@ export async function sendMessage(req, res) {
             resultData = await generateResponse(messages);
         } catch (aiError) {
             console.error("AI Generation Error:", aiError);
-            return res.status(429).json({ success: false, message: "The AI service is currently busy." });
+            const isRateLimit = aiError.status === 429 || aiError.statusCode === 429 || 
+                                aiError.message?.includes("429") || 
+                                aiError.message?.toLowerCase().includes("rate limit") ||
+                                aiError.message?.toLowerCase().includes("quota");
+            const statusCode = isRateLimit ? 429 : (aiError.status || aiError.statusCode || 500);
+            const message = isRateLimit 
+                ? "The AI service rate limit has been exceeded. Please try again shortly."
+                : (aiError.message || "Failed to generate AI response.");
+            return res.status(statusCode).json({ success: false, message });
         }
 
         // Step E: Save response based on structural configurations

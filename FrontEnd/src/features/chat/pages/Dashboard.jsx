@@ -93,7 +93,8 @@ const Dashboard = () => {
         showToast("Email dispatched successfully!", "success");
       }
     } catch (error) {
-      showToast("An error occurred while sending message.", "error");
+      const errorMessage = error?.response?.data?.message || "An error occurred while sending message.";
+      showToast(errorMessage, "error");
     } finally {
       setIsThinking(false);
     }

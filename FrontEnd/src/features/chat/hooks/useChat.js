@@ -55,7 +55,7 @@ export const useChat = () => {
 
     } catch (error) {
         console.error("Failed to complete message dispatch cycle:", error);
-        // Optional: Trigger your toast notification context here if needed
+        throw error;
     }
     // Note: dispatch(setLoading(false)) is omitted here because we removed 
     // full-screen loader initialization to let the smooth inline thinking indicator shine!

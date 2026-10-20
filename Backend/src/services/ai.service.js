@@ -6,15 +6,15 @@ import { searchInternet } from "./internet.service.js";
 import { sendEmail } from "./mail.service.js";
 import { marked } from "marked";
 
-const geminiModel = new ChatGoogleGenerativeAI({
-    model: "gemini-flash-latest",
-    apiKey: process.env.GEMINI_API_KEY
-});
-
 const mistralModel = new ChatMistralAI({
-    model: "mistral-small-latest",
+    model: process.env.MISTRAL_MODEL || "open-mistral-7b",
     apiKey: process.env.MISTRAL_API_KEY
 });
+
+const geminiModel = process.env.GEMINI_API_KEY ? new ChatGoogleGenerativeAI({
+    model: process.env.GEMINI_MODEL || "gemini-2.5-flash-lite",
+    apiKey: process.env.GEMINI_API_KEY
+}) : null;
 
 const searchInternetTool = tool(
     searchInternet,
@@ -98,36 +98,52 @@ const sendEmailTool = tool(
     }
 );
 
-const agent = createAgent({
+const mistralAgent = createAgent({
     model: mistralModel,
     tools: [ searchInternetTool, sendEmailTool ]
 });
+
+const geminiAgent = geminiModel ? createAgent({
+    model: geminiModel,
+    tools: [ searchInternetTool, sendEmailTool ]
+}) : null;
 
 export async function generateResponse(messages) {
     // Reset state variable indicator before starting a tool iteration cycle
     lastSentEmailData = null; 
 
-    console.log(messages)
+    const formattedMessages = [
+        new SystemMessage(`
+            You are a helpful, smart and precise assistant for answering questions, researching data, and performing automated actions like sending emails.
+            If you don't know the answer, say you don't know. 
+            
+            - If the question requires up-to-date information, use the "searchInternet" tool.
+            - If the user asks you to send an email, compose a well-structured message body and trigger the "sendEmail" tool.
+            - You can combine tools: if a user asks you to look something up and email it to them, first use "searchInternet", then use "sendEmail" with the compiled data.
+        `),
+        ...messages.map(msg => {
+            if (msg.role === "user") {
+                return new HumanMessage(msg.content);
+            } else if (msg.role === "ai" || msg.role === "email") {
+                return new AIMessage(msg.content);
+            }
+            return new HumanMessage(msg.content);
+        }).filter(Boolean)
+    ];
 
-    const response = await agent.invoke({
-        messages: [
-            new SystemMessage(`
-                You are a helpful, smart and precise assistant for answering questions, researching data, and performing automated actions like sending emails.
-                If you don't know the answer, say you don't know. 
-                
-                - If the question requires up-to-date information, use the "searchInternet" tool.
-                - If the user asks you to send an email, compose a well-structured message body and trigger the "sendEmail" tool.
-                - You can combine tools: if a user asks you to look something up and email it to them, first use "searchInternet", then use "sendEmail" with the compiled data.
-            `),
-            ...(messages.map(msg => {
-                // Support both legacy standard agent message structure contexts and new custom explicit roles
-                if (msg.role == "user") {
-                    return new HumanMessage(msg.content)
-                } else if (msg.role == "ai" || msg.role == "email") {
-                    return new AIMessage(msg.content)
-                }
-            })) ]
-    });
+    let response;
+    try {
+        // Primary agent execution using Mistral model
+        response = await mistralAgent.invoke({ messages: formattedMessages });
+    } catch (primaryErr) {
+        console.warn("Mistral agent invocation failed:", primaryErr.message);
+        if (geminiAgent) {
+            console.log("Attempting fallback with Gemini...");
+            response = await geminiAgent.invoke({ messages: formattedMessages });
+        } else {
+            throw primaryErr;
+        }
+    }
 
     // Return structured text interface alongside dynamic email tracking states
     return {
@@ -137,11 +153,25 @@ export async function generateResponse(messages) {
 }
 
 export const generateChatTitle = async (message) => {
-    const response = await mistralModel.invoke([
+    const promptMessages = [
         new SystemMessage(`You are a helpful assistant that generate concise and descriptive titles for chat conversations.
-        User will provide you with the first message of a chat conversation, and you will generate a title that captures the essence of the conversation in 2-4 words. The title should be clear, relevant, and engaging.`),
+        User will provide you with the first message of a chat conversation, and you will generate a title that captures the essence of the conversation in 2-4 words. The title should be clear, relevant, and engaging. Return ONLY the title with no extra quotes or punctuation.`),
         new HumanMessage(`Generate a title for a chat conversation based on the following first message: "${message}"`)
-    ]);
+    ];
 
-    return response.text;
+    try {
+        const response = await mistralModel.invoke(promptMessages);
+        return response.text?.trim() || "New Chat";
+    } catch (err) {
+        console.warn("Mistral title generation failed:", err.message);
+        if (geminiModel) {
+            try {
+                const response = await geminiModel.invoke(promptMessages);
+                return response.text?.trim() || "New Chat";
+            } catch (geminiErr) {
+                console.error("Gemini title fallback also failed:", geminiErr.message);
+            }
+        }
+        return "New Chat";
+    }
 }
