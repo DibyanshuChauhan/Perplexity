@@ -1,487 +1,184 @@
-<div align="center">
-
-# 🎨 Perplexity Frontend
-
-### A Modern AI Chat Interface Inspired by Perplexity AI
+# 🎨 Perplexity AI — Frontend Application
 
 <p align="center">
-A sleek, responsive, and interactive frontend built with <b>React 19</b>, <b>Vite</b>, <b>Redux Toolkit</b>, and <b>Tailwind CSS</b>, delivering a seamless AI chat experience with beautiful animations, markdown rendering, and intuitive user interactions.
-</p>
-
-<p align="center">
-
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Redux Toolkit](https://img.shields.io/badge/Redux-Toolkit-764ABC?style=for-the-badge&logo=redux&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![React Router](https://img.shields.io/badge/React-Router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white)
-![Axios](https://img.shields.io/badge/Axios-HTTP-5A29E4?style=for-the-badge)
-![Framer Motion](https://img.shields.io/badge/Framer-Motion-000000?style=for-the-badge&logo=framer&logoColor=white)
-![Markdown](https://img.shields.io/badge/Markdown-Rendering-000000?style=for-the-badge&logo=markdown)
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
-
+  <img src="https://img.shields.io/badge/React-19.x-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19" />
+  <img src="https://img.shields.io/badge/Vite-6.x-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Redux_Toolkit-2.x-764ABC?style=for-the-badge&logo=redux&logoColor=white" alt="Redux Toolkit" />
+  <img src="https://img.shields.io/badge/Framer_Motion-12.x-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
+  <img src="https://img.shields.io/badge/React_Markdown-9.x-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="React Markdown" />
 </p>
 
 ---
 
-### ⚡ Fast • 🎨 Beautiful • 🤖 AI Powered • 📱 Responsive
+## 📌 Overview
 
-</div>
-
----
-
-# 📖 Table of Contents
-
-- Overview
-- Features
-- Technology Stack
-- UI Components
-- Application Architecture
-- Folder Structure
-- Authentication Flow
-- Chat Flow
-- Installation
-- Environment Variables
-- Running the Project
-- Available Scripts
-- Responsive Design
-- Future Improvements
+The **Perplexity Frontend** is a modern Single Page Application (SPA) designed to deliver a snappy conversational search and task execution experience. Built with **React 19**, **Vite**, and **Tailwind CSS v4**, it couples state management via **Redux Toolkit** with micro-animations via **Framer Motion** to deliver a responsive, clean interface.
 
 ---
 
-# 🚀 Overview
+## 📑 Table of Contents
 
-The **Perplexity Frontend** is a modern AI-powered web application designed to deliver an intuitive conversational experience inspired by **Perplexity AI**.
-
-The application focuses on delivering a premium user experience through:
-
-- Beautiful animations
-- Responsive layouts
-- Smooth AI conversations
-- Markdown rendering
-- Intelligent loading states
-- Modern authentication flow
-- Clean component architecture
-
-The frontend communicates with an Express.js backend that handles authentication, AI responses, email services, and internet-enabled search using LangChain.
+- [Key User Experience Features](#-key-user-experience-features)
+- [Folder Structure](#-folder-structure)
+- [Feature-First Architecture](#-feature-first-architecture)
+- [UI Components Overview](#-ui-components-overview)
+- [State Management (Redux Store)](#-state-management-redux-store)
+- [Installation & Running](#-installation--running)
+- [Environment Configuration](#-environment-configuration)
+- [Scripts Reference](#-scripts-reference)
+- [Responsive & Visual Design](#-responsive--visual-design)
 
 ---
 
-# ✨ Features
+## ✨ Key User Experience Features
 
-## 🤖 AI Experience
-
-- AI Chat Interface
-- Markdown Response Rendering
-- Thinking Animation
-- Typing Effect
-- Loading Indicators
-- Internet-enabled AI Responses
-- Clean Conversation UI
+- 💬 **Dynamic Search vs. Email Mode:** Intuitive mode toggle enabling users to effortlessly switch between real-time web research and autonomous email composition.
+- ⚡ **Typewriter Effect:** Animated AI response streaming that smoothly renders markdown tokens, headers, tables, code blocks, and lists.
+- 🧠 **Inline Thinking Indicator:** Non-intrusive animated status indicator notifying users while LangChain evaluates internet searches or drafts emails.
+- ✉️ **Interactive Email Cards:** Renders specialized email status widgets directly inside the conversation thread showing delivery state, recipient, and subject.
+- 📂 **Session Drawer & History:** Instant switching between conversation threads, with automated title naming and thread deletion.
+- 🔔 **Global Toast System:** Custom floating toast notification provider supporting success, warning, error, and operational info alerts.
 
 ---
 
-## 👤 Authentication
+## 📂 Folder Structure
 
-- User Registration
-- Secure Login
-- JWT Authentication
-- Protected Routes
-- Persistent User Session
-
----
-
-## 💬 Chat Experience
-
-- Sidebar Navigation
-- Previous Conversations
-- Responsive Chat Layout
-- Auto Scroll
-- Markdown Support
-- Code Block Rendering
-- AI Generated Email Support
-
----
-
-## 🎨 UI/UX
-
-- Fully Responsive Design
-- Modern Glassmorphism UI
-- Smooth Page Animations
-- Beautiful Icons
-- Interactive Buttons
-- Clean Typography
-- Mobile Friendly
-
----
-
-# 🛠 Technology Stack
-
-| Category | Technology |
-|-----------|------------|
-| Framework | React 19 |
-| Build Tool | Vite |
-| Styling | Tailwind CSS v4 |
-| State Management | Redux Toolkit |
-| Routing | React Router DOM |
-| HTTP Client | Axios |
-| Animations | Framer Motion |
-| Icons | React Icons |
-| Markdown | React Markdown |
-| Markdown Plugins | Remark GFM |
-
----
-
-# 🧩 UI Components
-
-The frontend follows a modular and reusable component architecture, where each component is responsible for a single piece of functionality. This keeps the codebase maintainable, scalable, and easy to extend.
-
-```
-src
+```text
+FrontEnd/
 │
-├── app/
-├── context/
-├── features/
-│   ├── auth/
-│   └── chat/
-│       ├── components/
-│       │   ├── EmailMessageCard.jsx
-│       │   ├── Loader.jsx
-│       │   ├── Sidebar.jsx
-│       │   ├── ThinkingIndicator.jsx
-│       │   └── TypingEffect.jsx
-│       │
-│       ├── hooks/
-│       ├── pages/
-│       ├── service/
-│       └── chat.slice.js
-│
-└── main.jsx
-```
-
-### 📁 Component Overview
-
-| Component | Description |
-|------------|-------------|
-| **Sidebar** | Provides navigation between conversations and manages the chat history interface. |
-| **Loader** | Displays elegant loading animations while waiting for server responses. |
-| **ThinkingIndicator** | Indicates that the AI is processing the user's prompt before generating a response. |
-| **TypingEffect** | Animates AI responses with a smooth character-by-character typing effect for a natural conversational experience. |
-| **EmailMessageCard** | Renders AI-generated emails in a clean, structured card layout before they are sent to recipients. |
-
----
-
-### 🏗 Feature-Based Organization
-
-Instead of organizing files solely by type, the application follows a **feature-first architecture**.
-
-```
-features/
-│
-├── auth/
-│     ├── pages
-│     ├── services
-│     ├── state
-│     └── authentication logic
-│
-└── chat/
-      ├── components
-      ├── hooks
-      ├── pages
-      ├── services
-      ├── Redux Slice
-      └── AI chat logic
-```
-
-This approach keeps authentication and chat-related code isolated, making the project easier to scale, maintain, and extend as new features are introduced.
----
-
-# 🏗 Application Architecture
-
-```
-                 User
-                   │
-                   ▼
-          React Application
-                   │
-       ┌───────────┼───────────┐
-       ▼           ▼           ▼
- Authentication   Chat UI    Redux Store
-       │           │           │
-       └───────────┼───────────┘
-                   │
-                   ▼
-              Axios Requests
-                   │
-                   ▼
-          Express Backend APIs
-                   │
-                   ▼
-          AI + Authentication
-```
-
----
-
-# 📂 Project Structure
-
-```
-FrontEnd
-│
-├── public/
+├── public/                       # Static public assets
 │
 ├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── hooks/
-│   ├── pages/
-│   ├── redux/
-│   ├── routes/
-│   ├── services/
-│   ├── utils/
-│   ├── App.jsx
-│   └── main.jsx
+│   ├── app/                      # Application core configuration
+│   │   ├── app.css               # Global application CSS
+│   │   ├── App.jsx               # App component with router outlet
+│   │   ├── app.routes.jsx        # Route definitions & Protected Route wrappers
+│   │   ├── app.store.js          # Centralized Redux Toolkit store
+│   │   └── index.css             # Tailwind CSS imports & theme directives
+│   │
+│   ├── context/
+│   │   └── ToastContext.jsx      # Global Toast Notification provider & hook
+│   │
+│   ├── features/
+│   │   ├── auth/                 # User authentication domain
+│   │   │   ├── components/       # AuthInput, PasswordInput, AuthButton, Protected
+│   │   │   ├── hook/             # useAuth hook (register, login, logout, getMe)
+│   │   │   ├── pages/            # Login, Register, ResendVerification
+│   │   │   ├── service/          # auth.api.js (Axios authentication client)
+│   │   │   └── auth.slice.js     # Redux slice for user session & loading state
+│   │   │
+│   │   └── chat/                 # Conversational AI domain
+│   │       ├── components/       # Sidebar, ThinkingIndicator, TypingEffect, EmailCard
+│   │       ├── hooks/            # useChat hook (send message, select chat, delete)
+│   │       ├── pages/            # Dashboard (chat main), EmailIntegration
+│   │       ├── service/          # chat.api.js (Axios chat & messages client)
+│   │       └── chat.slice.js     # Redux slice for chats, messages & active thread
+│   │
+│   └── main.jsx                  # React DOM mount point & Redux Provider setup
 │
-├── package.json
-├── vite.config.js
-└── README.md
+├── index.html                    # HTML entry template
+├── package.json                  # Dependencies & npm scripts
+└── vite.config.js                # Vite build and plugin configuration
 ```
 
 ---
 
-# 🔐 Authentication Flow
+## 🏗 Feature-First Architecture
 
-```
-User
+The frontend is structured around **feature domains** (`auth` and `chat`) rather than technical file types. Each feature encapsulates:
 
- │
+- **State:** Dedicated Redux slices (`auth.slice.js`, `chat.slice.js`)
+- **Services:** Isolated Axios API client methods (`auth.api.js`, `chat.api.js`)
+- **Custom Hooks:** Clean reactive controllers (`useAuth.js`, `useChat.js`)
+- **Components & Pages:** Specialized UI elements tailored to the domain
 
- ▼
-
-Login / Register
-
- │
-
- ▼
-
-Axios Request
-
- │
-
- ▼
-
-Backend API
-
- │
-
- ▼
-
-JWT Token
-
- │
-
- ▼
-
-Protected Routes
-
- │
-
- ▼
-
-Dashboard / Chat
-```
+This ensures high cohesion, zero clutter, and seamless scalability as new features are added.
 
 ---
 
-# 🤖 AI Chat Flow
+## 🧩 UI Components Overview
 
-```
-User Prompt
-
-     │
-
-     ▼
-
-React Component
-
-     │
-
-     ▼
-
-Redux Action
-
-     │
-
-     ▼
-
-Axios API Request
-
-     │
-
-     ▼
-
-Backend
-
-     │
-
-     ▼
-
-LangChain + AI
-
-     │
-
-     ▼
-
-Markdown Response
-
-     │
-
-     ▼
-
-Typing Effect
-
-     │
-
-     ▼
-
-Displayed to User
-```
+| Component | Location | Purpose |
+| :--- | :--- | :--- |
+| **Dashboard** | `features/chat/pages/Dashboard.jsx` | Main layout orchestrating the chat stream, mode toggles, and query input. |
+| **Sidebar** | `features/chat/components/Sidebar.jsx` | Slide-out navigation drawer displaying past conversation threads. |
+| **ThinkingIndicator** | `features/chat/components/ThinkingIndicator.jsx` | Animated pill displayed while the AI agent queries Tavily or drafts emails. |
+| **TypingEffect** | `features/chat/components/TypingEffect.jsx` | Simulates natural character streaming while preserving Markdown format. |
+| **EmailMessageCard** | `features/chat/components/EmailMessageCard.jsx` | Specialized card showing recipient, subject line, and sent/failed status. |
+| **ToastProvider** | `context/ToastContext.jsx` | Fixed-position toast manager with auto-dismiss timers and Framer Motion transitions. |
 
 ---
 
-# 🎨 UI Highlights
+## 🧠 State Management (Redux Store)
 
-The interface includes several custom-built components that enhance the overall user experience.
+The store (`src/app/app.store.js`) combines two primary state slices:
 
-### ✨ Sidebar
+### `auth` Slice
+- `user`: Authenticated user object `{ id, username, email, verified }`.
+- `loading`: Boolean state for authentication dispatches.
+- `authChecked`: Tracks whether initial session verification has run.
+- `error`: Stores recent authentication error messages.
 
-Organized navigation for conversations and account management.
-
-### 🤔 Thinking Indicator
-
-Displays when the AI is processing a request.
-
-### ⌨️ Typing Effect
-
-Streams AI responses with a natural typing animation.
-
-### ⏳ Loader
-
-Elegant loading indicators throughout the application.
-
-### 📄 Markdown Renderer
-
-Supports:
-
-- Headings
-- Lists
-- Tables
-- Links
-- Images
-- Code Blocks
-- Blockquotes
-
-using **React Markdown** and **Remark GFM**.
+### `chat` Slice
+- `chats`: Dictionary storing chat metadata and message histories indexed by ID.
+- `currentChatId`: ID of the currently focused conversation session.
+- `loading`: Tracks thread provisioning and message queries.
 
 ---
 
-# ⚙ Installation
+## 🚀 Installation & Running
 
+### 1. Install Dependencies
 ```bash
-git clone https://github.com/DibyanshuChauhan/Perplexity
-
-cd FrontEnd
-
 npm install
 ```
 
----
-
-# 🔑 Environment Variables
-
-Create a `.env` file in the root of the frontend project.
-
-```env
-VITE_API_URL=http://localhost:3000
-```
-
----
-
-# ▶ Running the Project
-
-Development
-
+### 2. Start Development Server
 ```bash
 npm run dev
 ```
+The application will launch on `http://localhost:5173`.
 
-Production Build
-
+### 3. Build for Production
 ```bash
 npm run build
 ```
+Generates optimized, minified production assets in the `dist/` directory.
 
-Preview Build
-
+### 4. Preview Production Build
 ```bash
 npm run preview
 ```
 
 ---
 
-# 📜 Available Scripts
+## 🔑 Environment Configuration
 
-| Command | Description |
-|----------|-------------|
-| npm run dev | Start development server |
-| npm run build | Create production build |
-| npm run preview | Preview production build |
-| npm run lint | Run ESLint |
+Create a file named `.env` in the `FrontEnd/` root directory:
 
----
+```env
+# URL of your running Express backend
+VITE_API_URL=http://localhost:3000
+```
 
-# 📱 Responsive Design
-
-The application is optimized for:
-
-- 💻 Desktop
-- 🖥 Large Screens
-- 📱 Mobile Devices
-- 📟 Tablets
-
-Built with a mobile-first approach using Tailwind CSS.
+> **Note:** If `VITE_API_URL` is omitted, the API service defaults to `http://localhost:3000/api`.
 
 ---
 
-# 🚀 Future Improvements
-- Theme Customization
-- Voice Input
-- Speech Synthesis
-- PWA Support
-- Drag & Drop File Uploads
-- Multi-language Support
-- AI Conversation Export
-- Accessibility Enhancements
-- Performance Optimizations
+## 📜 Scripts Reference
+
+| Command | Action |
+| :--- | :--- |
+| `npm run dev` | Launches the Vite local dev server with Hot Module Replacement (HMR). |
+| `npm run build` | Compiles and tree-shakes JSX and CSS for production deployment. |
+| `npm run preview` | Spins up a local web server to test the production bundle. |
+| `npm run lint` | Analyzes code for syntax errors and formatting discrepancies using ESLint. |
 
 ---
 
-# ❤️ Built With
+## 📱 Responsive & Visual Design
 
-- React 19
-- Vite
-- Tailwind CSS
-- Redux Toolkit
-- Axios
-- Framer Motion
-- React Markdown
-- React Router
-
----
-
-<div align="center">
-
-## ⭐ Star this repository if you found it useful!
-
-Designed & Developed with ❤️ using **React • Vite • Tailwind CSS • Redux Toolkit**
-
-</div>
+- **Dark Theme Aesthetics:** Deep neutral backgrounds (`#0d0d0d`, `#121212`) paired with clean emerald and teal accent highlights.
+- **Glassmorphism:** Frosted backdrop filters (`backdrop-blur-md`) applied across floating cards, modals, and toasts.
+- **Mobile First:** Responsive sidebar collapses into a slide-over mobile drawer on screens `< 768px`.

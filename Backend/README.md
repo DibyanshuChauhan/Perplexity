@@ -1,389 +1,250 @@
-<div align="center">
-
-# 🚀 Perplexity Backend
-
-### Intelligent AI Backend powered by LangChain, Mistral AI, Tavily Search & Express.js
+# ⚙️ Perplexity AI — Backend Service Engine
 
 <p align="center">
-Robust backend powering a Perplexity-inspired AI assistant with authentication, internet-enabled AI, email integration, and scalable REST APIs.
-</p>
-
-<p align="center">
-
-![Node.js](https://img.shields.io/badge/Node.js-22.x-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express.js-5.x-000000?style=for-the-badge&logo=express)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
-![Mongoose](https://img.shields.io/badge/Mongoose-ODM-880000?style=for-the-badge)
-![LangChain](https://img.shields.io/badge/LangChain-AI-00A67E?style=for-the-badge)
-![Mistral AI](https://img.shields.io/badge/Mistral-AI-FF7000?style=for-the-badge)
-![Tavily](https://img.shields.io/badge/Tavily-Web_Search-3B82F6?style=for-the-badge)
-![JWT](https://img.shields.io/badge/JWT-Authentication-black?style=for-the-badge&logo=jsonwebtokens)
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
-
+  <img src="https://img.shields.io/badge/Node.js-22.x-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express.js-5.x-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js" />
+  <img src="https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/LangChain-AI-00A67E?style=for-the-badge" alt="LangChain" />
+  <img src="https://img.shields.io/badge/Mistral_AI-open--mistral--7b-FF7000?style=for-the-badge" alt="Mistral AI" />
+  <img src="https://img.shields.io/badge/Tavily-Search_Engine-3B82F6?style=for-the-badge" alt="Tavily AI" />
+  <img src="https://img.shields.io/badge/Nodemailer-OAuth_2.0-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Nodemailer" />
 </p>
 
 ---
 
-**Modern • Secure • Scalable • AI Powered**
+## 📌 Overview
 
-</div>
-
----
-
-# 📖 Table of Contents
-
-- [Overview](#-overview)
-- [Features](#-features)
-- [Technology Stack](#-technology-stack)
-- [Architecture](#-architecture)
-- [Project Structure](#-project-structure)
-- [Authentication Flow](#-authentication-flow)
-- [AI Workflow](#-ai-workflow)
-- [Email Service](#-email-service)
-- [REST APIs](#-rest-apis)
-- [Installation](#-installation)
-- [Environment Variables](#-environment-variables)
-- [Running the Server](#-running-the-server)
-- [Scripts](#-scripts)
-- [Security](#-security)
-- [Future Improvements](#-future-improvements)
+The **Perplexity Backend** is an asynchronous Express.js API service designed around an agentic workflow. Rather than functioning as a standard request-response LLM wrapper, the service integrates **LangChain tool agents** that can autonomously search the live web via Tavily AI and compile rich HTML research briefings to dispatch via Gmail OAuth 2.0.
 
 ---
 
-# 📌 Overview
+## 📑 Table of Contents
 
-Perplexity Backend is a modern **Express.js** backend that powers an AI assistant similar to **Perplexity AI**.
-
-The backend combines:
-
-- Secure Authentication
-- AI Conversations
-- Internet Search
-- Email Automation
-- REST APIs
-- MongoDB
-- MVC Architecture
-
-The AI system is built using **LangChain**, allowing the application to combine **Mistral AI** with **Tavily Search** for intelligent, internet-aware responses.
+- [Core Architectural Highlights](#-core-architectural-highlights)
+- [Folder Structure](#-folder-structure)
+- [AI Agent & Tool Architecture](#-ai-agent--tool-architecture)
+- [REST API Reference](#-rest-api-reference)
+  - [Authentication API](#1-authentication-api-apiauth)
+  - [Chat & Message API](#2-chat--message-api-apichats)
+- [Database Schema Design](#-database-schema-design)
+- [Environment Configuration](#-environment-configuration)
+- [Installation & Running](#-installation--running)
+- [Google OAuth Refresh Token Guide](#-google-oauth-refresh-token-guide)
+- [Error Handling & Rate Limits](#-error-handling--rate-limits)
 
 ---
 
-# ✨ Features
+## 🏗 Core Architectural Highlights
 
-## 🤖 AI Features
-
-- AI Chat
-- Internet-enabled AI
-- LangChain Integration
-- Mistral AI
-- Tavily Search
-- Context-aware responses
-- Markdown-ready output
+1. **Express 5.x & ESM:** Built with modern ECMAScript module imports (`"type": "module"`) and native promise-based handlers.
+2. **LangChain Tool Agents:** Uses LangChain's `createAgent` with function-calling schemas validated via **Zod**.
+3. **Dual Model Redundancy:** Employs **Mistral AI** (`open-mistral-7b`) as the primary reasoning engine, with automated fallback to **Google Gemini** (`gemini-2.5-flash-lite`).
+4. **HTML Email Formatter:** Converts raw LLM markdown into an inline CSS-styled, responsive email document via **Marked**.
+5. **Stateful Session Storage:** Manages threads in **MongoDB** (`User`, `Chat`, and `Message` models) with automated title synthesis.
 
 ---
 
-## 🔐 Authentication
+## 📂 Folder Structure
 
-- User Registration
-- Secure Login
-- Password Hashing
-- JWT Authentication
-- Cookie Authentication
-- Protected APIs
-- User Verification
-
----
-
-## 📧 Email Features
-
-- Email Verification
-- Welcome Emails
-- AI-generated Emails
-- Send Emails through AI
-- SMTP Integration using Nodemailer
-
----
-
-## 🛠 Backend
-
-- Express.js REST APIs
-- MVC Architecture
-- MongoDB
-- Mongoose ODM
-- Request Validation
-- Error Handling
-- Middleware
-- Environment Configuration
-
----
-
-# 🛠 Technology Stack
-
-| Category | Technologies |
-|-----------|-------------|
-| Runtime | Node.js |
-| Framework | Express.js |
-| Database | MongoDB |
-| ODM | Mongoose |
-| AI Framework | LangChain |
-| LLM | Mistral AI |
-| Search Engine | Tavily AI |
-| Authentication | JWT, Cookies |
-| Password Security | bcrypt.js |
-| Validation | Zod, Express Validator |
-| Email | Nodemailer |
-| Logging | Morgan |
-| Environment | dotenv |
-
----
-
-# 🏗 Architecture
-
-```
-                    Client
-                       │
-                       ▼
-               Express REST API
-                       │
-        ┌──────────────┼──────────────┐
-        ▼              ▼              ▼
- Authentication    AI Controller   Mail Controller
-        │              │              │
-        ▼              ▼              ▼
- MongoDB        LangChain Engine  Nodemailer
-                        │
-             ┌──────────┴──────────┐
-             ▼                     ▼
-        Mistral AI          Tavily Search
-```
-
----
-
-# 📂 Project Structure
-
-```
-Backend
-│
-├── public/
-│
+```text
+Backend/
 ├── src/
 │   ├── config/
+│   │   └── db.js                 # Mongoose database connection initialization
 │   ├── controllers/
-│   ├── middleware/
+│   │   ├── auth.controller.js    # Registration, login, verify, logout, getMe
+│   │   └── chat.controller.js    # Chat creation, message handling, history queries
+│   ├── middlewares/
+│   │   └── auth.middleware.js    # JWT cookie verification middleware
 │   ├── models/
+│   │   ├── chat.model.js         # Chat session schema (title, user, chatType)
+│   │   ├── message.model.js      # Message schema (role, content, emailDetails)
+│   │   └── user.model.js         # User schema (username, email, passwordHash, verified)
 │   ├── routes/
+│   │   ├── auth.routes.js        # Auth endpoint definitions
+│   │   └── chat.routes.js        # Chat & message endpoint definitions
 │   ├── services/
-│   ├── utils/
+│   │   ├── ai.service.js         # LangChain agent, tools binding, title generator
+│   │   ├── internet.service.js   # Tavily web search integration
+│   │   └── mail.service.js       # Nodemailer transport & OAuth 2.0 token handler
 │   ├── validators/
-│   └── ...
+│   │   └── auth.validator.js     # express-validator request validation schemas
+│   └── app.js                    # Express app configuration, CORS, cookie parser
 │
-├── package.json
-├── server.js
-└── README.md
+├── .env                          # Local environment variables (do not commit)
+├── package.json                  # Dependencies & scripts
+└── server.js                     # HTTP entry point (port listening & DB sync)
 ```
 
 ---
 
-# 🔐 Authentication Flow
+## 🤖 AI Agent & Tool Architecture
 
+The agent is instantiated in `src/services/ai.service.js` with access to two dedicated tools:
+
+```text
+                             User Prompt
+                                 │
+                                 ▼
+                     LangChain createAgent
+                                 │
+             ┌───────────────────┴───────────────────┐
+             ▼                                       ▼
+    searchInternet Tool                       sendEmail Tool
+             │                                       │
+     Tavily Search API                    Compile Markdown to HTML
+             │                                       │
+  Top 5 Real-Time Results                 Nodemailer + Google OAuth
+             │                                       │
+             └───────────────────┬───────────────────┘
+                                 ▼
+                    Final Structured AI Response
 ```
-User
- │
- ▼
-Register
- │
- ▼
-Password Hashing
- │
- ▼
-MongoDB
- │
- ▼
-Email Verification
- │
- ▼
-Login
- │
- ▼
-JWT Generation
- │
- ▼
-Cookie Stored
- │
- ▼
-Protected APIs
+
+### 1. `searchInternet` Tool
+- **Description:** Queries the live web using Tavily Search API.
+- **Trigger:** When users ask about current events, scores, breaking news, or topics beyond training cutoffs.
+- **Parameters:** `{ query: string }`.
+
+### 2. `sendEmail` Tool
+- **Description:** Generates an executive briefing in Markdown, formats it into responsive inline-CSS HTML, and sends it via Gmail.
+- **Trigger:** When users ask to email summaries, send messages, or forward research.
+- **Parameters:** `{ to: string, subject: string, body: string }`.
+
+---
+
+## 🌐 REST API Reference
+
+All protected endpoints require an authenticated JWT session (sent via HTTP-only cookie).
+
+### 1. Authentication API (`/api/auth`)
+
+| Endpoint | Method | Access | Body Payload | Description |
+| :--- | :---: | :---: | :--- | :--- |
+| `/api/auth/register` | `POST` | Public | `{ username, email, password }` | Creates user and dispatches email verification token. |
+| `/api/auth/login` | `POST` | Public | `{ email, password }` | Authenticates user and issues HTTP-only `token` cookie. |
+| `/api/auth/get-me` | `GET` | Authenticated | None | Returns current user profile without password. |
+| `/api/auth/verify-email` | `GET` | Public | Query: `?token=<token>` | Verifies email and activates account. |
+| `/api/auth/resend-verification` | `POST` | Public | `{ email }` | Generates and sends a new verification link. |
+| `/api/auth/logout` | `POST` | Public | None | Clears authentication cookie. |
+
+### 2. Chat & Message API (`/api/chats`)
+
+| Endpoint | Method | Access | Body / Query | Description |
+| :--- | :---: | :---: | :--- | :--- |
+| `/api/chats/message` | `POST` | Authenticated | `{ message, chat?, chatType? }` | Primary AI interaction endpoint. Processes prompt through LangChain agent. |
+| `/api/chats` | `GET` | Authenticated | None | Returns all conversation sessions for the user. |
+| `/api/chats/:chatId/messages` | `GET` | Authenticated | Param: `chatId` | Returns chronologically ordered message history. |
+| `/api/chats/delete/:chatId` | `DELETE` | Authenticated | Param: `chatId` | Permanently deletes a chat session and its messages. |
+
+---
+
+## 🗄 Database Schema Design
+
+### User Model (`users`)
+```javascript
+{
+  username: { type: String, required: true, unique: true },
+  email:    { type: String, required: true, unique: true },
+  password: { type: String, required: true }, // bcrypt hash
+  verified: { type: Boolean, default: false }
+}
+```
+
+### Chat Model (`chats`)
+```javascript
+{
+  user:     { type: ObjectId, ref: 'User', required: true },
+  title:    { type: String, required: true },
+  chatType: { type: String, enum: ['search', 'email'], default: 'search' }
+}
+```
+
+### Message Model (`messages`)
+```javascript
+{
+  chat:         { type: ObjectId, ref: 'Chat', required: true },
+  role:         { type: String, enum: ['user', 'ai', 'email'], required: true },
+  content:      { type: String, required: true },
+  emailDetails: {
+    to:      String,
+    subject: String,
+    status:  { type: String, enum: ['sent', 'failed'] }
+  }
+}
 ```
 
 ---
 
-# 🤖 AI Workflow
+## 🔑 Environment Configuration
 
-```
-User Prompt
-      │
-      ▼
-AI Controller
-      │
-      ▼
-LangChain
-      │
- ┌────┴─────────┐
- ▼              ▼
-Mistral AI   Tavily Search
-      │
-      ▼
-Merged Response
-      │
-      ▼
-REST API Response
-```
-
----
-
-# 📧 Email Service
-
-The backend includes an integrated email system powered by **Nodemailer**.
-
-Supported features include:
-
-- Email Verification
-- Welcome Emails
-- AI-generated Emails
-- Send emails directly from AI
-
----
-
-# 🌐 REST APIs
-
-The backend exposes RESTful APIs for:
-
-- Authentication
-- User Management
-- AI Chat
-- Email Services
-
----
-
-# ⚙ Installation
-
-```bash
-git clone https://github.com/DibyanshuChauhan/Perplexity
-
-cd Backend
-
-npm install
-```
-
----
-
-# 🔑 Environment Variables
-
-Create a `.env` file in the root of the **Backend** directory and configure the following variables.
+Create a `.env` file in the `Backend/` directory:
 
 ```env
-# ==========================================
-# Server Configuration
-# ==========================================
+# Server
 PORT=3000
 NODE_ENV=development
 
-# ==========================================
 # Database
-# ==========================================
-MONGO_URI=your_mongodb_connection_string
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/Perplexity
 
-# ==========================================
 # Authentication
-# ==========================================
-JWT_SECRET=your_super_secret_jwt_key
+JWT_SECRET=your_jwt_secret_key_here
 
-# ==========================================
-# AI Providers
-# ==========================================
-GEMINI_API_KEY=your_google_gemini_api_key
-MISTRAL_API_KEY=your_mistral_api_key
-TAVILY_API_KEY=your_tavily_api_key
+# AI Model Configuration
+MISTRAL_API_KEY=your_mistral_api_key_here
+MISTRAL_MODEL=open-mistral-7b
 
-# ==========================================
-# Google OAuth (Required for Email Service)
-# ==========================================
-GOOGLE_USER=your_email@gmail.com
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_REFRESH_TOKEN=your_google_refresh_token
+# Fallback AI Model
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash-lite
+
+# Search Service
+TAVILY_API_KEY=tvly-your_tavily_key_here
+
+# Google OAuth (Nodemailer Email Service)
+GOOGLE_USER=your_verified_gmail@gmail.com
+GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_client_secret
+GOOGLE_REFRESH_TOKEN=1//your_refresh_token
 ```
 
-> **⚠️ Important**
->
-> - Never commit your `.env` file to version control.
-> - Keep all API keys and secrets private.
-> - Ensure the MongoDB database is accessible before starting the server.
-> - The Google OAuth credentials are required for the AI-powered email functionality powered by **Nodemailer**.
-> - Tavily enables the AI to access real-time information from the web.
-> - Mistral AI serves as the primary Large Language Model (LLM) through **LangChain**.
-> - Gemini API support is included for extensibility and future AI workflows.
 ---
 
-# ▶ Running the Server
+## 🚀 Installation & Running
 
-Development
+### 1. Install Dependencies
+```bash
+npm install
+```
 
+### 2. Run in Development Mode
 ```bash
 npm run dev
 ```
+*Uses `nodemon server.js` to automatically reload on code changes.*
 
-Production
-
+### 3. Run in Production Mode
 ```bash
 npm start
 ```
 
 ---
 
-# 📜 Scripts
+## 📧 Google OAuth Refresh Token Guide
 
-| Command | Description |
-|----------|-------------|
-| npm run dev | Starts development server |
-| npm start | Starts production server |
+To enable automated email delivery:
 
----
-
-# 🔒 Security
-
-The backend follows modern security practices including:
-
-- Password Hashing
-- JWT Authentication
-- Cookie Security
-- Environment Variables
-- Request Validation
-- Protected Routes
-- Error Handling
+1. Visit [Google Cloud Console](https://console.cloud.google.com/) and enable the **Gmail API**.
+2. Create an **OAuth 2.0 Client ID** with `https://developers.google.com/oauthplayground` in **Authorized redirect URIs**.
+3. Go to [Google Developers OAuth 2.0 Playground](https://developers.google.com/oauthplayground/).
+4. Click the gear icon (⚙️) on the top right, check **"Use your own OAuth credentials"**, and input your `Client ID` & `Client Secret`.
+5. Select `https://mail.google.com/` scope, click **Authorize APIs**, and accept permissions with your sender Gmail account.
+6. Click **Exchange authorization code for tokens** and copy the resulting `Refresh token` into `GOOGLE_REFRESH_TOKEN`.
 
 ---
 
-# 🚀 Future Improvements
+## ⚠️ Error Handling & Rate Limits
 
-- Refresh Tokens
-- OAuth Authentication
-- Role Based Authorization
-- Rate Limiting
-- AI Memory
-- Streaming Responses
-- Vector Database
-- RAG Pipeline
-- API Documentation
-- Docker Support
-- Unit Testing
-- CI/CD Pipeline
-
----
-
-<div align="center">
-
-### ⭐ If you found this project helpful, consider giving it a star!
-
-Made with ❤️ using **Express.js • LangChain • Mistral AI • MongoDB**
-
-</div>
+- **Rate Limits (`429 Too Many Requests`):** If using Mistral's free tier, always use `MISTRAL_MODEL=open-mistral-7b`. Avoid `mistral-small-latest` on free tier keys as Mistral enforces a 0 request/min restriction on that model.
+- **Detailed Error Reporting:** The controller checks specific error statuses from upstream AI providers and returns informative JSON responses rather than generic catch-all errors.
