@@ -2,9 +2,7 @@ import { generateResponse, generateChatTitle } from "../services/ai.service.js";
 import chatModel from "../models/chat.model.js";
 import messageModel from "../models/message.model.js";
 
-// ==========================================
 // 1. SEND MESSAGE (& Maintain Chat History)
-// ==========================================
 
 export async function sendMessage(req, res) {
     // Extracting chatType passed directly from the client frontend toggle request
@@ -108,9 +106,7 @@ export async function sendMessage(req, res) {
     }
 }
 
-// ==========================================
 // 2. GET ALL CHATS FOR LOGGED IN USER
-// ==========================================
 // Update getChats controller to return chatType metadata back to client Redux stores
 export async function getChats(req, res) {
     if (!req.user || !req.user.id) return res.status(401).json({ success: false, message: "Unauthorized." });
@@ -121,9 +117,7 @@ export async function getChats(req, res) {
         return res.status(500).json({ success: false, message: "Failed to retrieve chats." });
     }
 }
-// ==========================================
 // 3. GET MESSAGES FOR A SPECIFIC CHAT
-// ==========================================
 export async function getMessages(req, res) {
     const { chatId } = req.params;
 
@@ -163,9 +157,7 @@ export async function getMessages(req, res) {
     }
 }
 
-// ==========================================
 // 4. DELETE CHAT & DEPENDENT MESSAGES
-// ==========================================
 export async function deleteChat(req, res) {
     const { chatId } = req.params;
 
