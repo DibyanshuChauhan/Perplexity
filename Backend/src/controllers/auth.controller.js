@@ -9,15 +9,73 @@ const getBaseUrl = (req) => {
 export const registerController = async (req, res) => {
     try {
         const { username, email, password } = req.body;
+        const normalizedEmail = email ? email.toLowerCase().trim() : "";
+        const normalizedUsername = username ? username.trim() : "";
         
         // 1. Check if user already exists in the database
         const isUserAlreadyExists = await userModel.findOne({
             $or: [
-                { username }, { email }
+                { username: normalizedUsername }, 
+                { email: normalizedEmail }
             ]
         });
 
         if (isUserAlreadyExists) {
+            // If user previously attempted registration with this email but was not verified (e.g. email sending failed)
+            if (!isUserAlreadyExists.verified && isUserAlreadyExists.email === normalizedEmail) {
+                isUserAlreadyExists.username = normalizedUsername;
+                isUserAlreadyExists.password = password;
+                await isUserAlreadyExists.save();
+
+                const emailVerificationToken = jwt.sign({
+                    email: isUserAlreadyExists.email
+                }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+                const appBaseUrl = getBaseUrl(req);
+                const verificationLink = `${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}`;
+
+                try {
+                    await sendEmail({
+                        to: normalizedEmail,
+                        subject: "Welcome to Perplexity!",
+                        html: `
+                            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                                <h2>Welcome to Perplexity 🚀</h2>
+                                <p>Hi <strong>${normalizedUsername}</strong>,</p>
+                                <p>Please verify your email address by clicking the button below:</p>
+                                <a href="${verificationLink}" style="display:inline-block; padding:12px 24px; background:#4F46E5; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold;">Verify Email</a>
+                                <p style="margin-top:20px;">Or copy and paste this link into your browser:</p>
+                                <p>${verificationLink}</p>
+                            </div>
+                        `,
+                    });
+                } catch (emailErr) {
+                    console.error("⚠️ Failed to dispatch verification email:", emailErr.message);
+                    console.log("\n");
+                    console.log("🔗 LOCAL DEV VERIFICATION LINK (Click or paste to verify):");
+                    console.log(verificationLink);
+                    console.log("\n");
+
+                    if (process.env.NODE_ENV !== "production") {
+                        isUserAlreadyExists.verified = true;
+                        await isUserAlreadyExists.save();
+                        console.log(`✅ [DEV MODE] User ${isUserAlreadyExists.username} auto-verified for local development.`);
+                    }
+                }
+
+                return res.status(200).json({
+                    success: true,
+                    message: isUserAlreadyExists.verified 
+                        ? "User verified successfully!" 
+                        : "Verification email resent! Please check your inbox.",
+                    user: {
+                        id: isUserAlreadyExists._id,
+                        username: isUserAlreadyExists.username,
+                        email: isUserAlreadyExists.email
+                    }
+                });
+            }
+
             return res.status(400).json({
                 success: false,
                 message: "User with this email or username already exists",
@@ -27,8 +85,8 @@ export const registerController = async (req, res) => {
 
         // 2. Create new user document (Schema pre-save hook will handle bcrypt hashing)
         const newUser = await userModel.create({
-            username,
-            email,
+            username: normalizedUsername,
+            email: normalizedEmail,
             password
         });
 
@@ -38,58 +96,80 @@ export const registerController = async (req, res) => {
         }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
         const appBaseUrl = getBaseUrl(req);
+        const verificationLink = `${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}`;
 
         // 4. Dispatch the verification mail flow sequence
-        await sendEmail({
-            to: email,
-            subject: "Welcome to Perplexity!",
-            html: `
-                <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-                    <h2>Welcome to Perplexity 🚀</h2>
-                    <p>Hi <strong>${username}</strong>,</p>
-                    <p>
-                        Thank you for registering with <strong>Perplexity</strong>.
-                        We're excited to have you on board!
-                    </p>
-                    <p>
-                        Please verify your email address by clicking the button below:
-                    </p>
-                    <a
-                        href="${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}"
-                        style="
-                            display:inline-block;
-                            padding:12px 24px;
-                            background:#4F46E5;
-                            color:#fff;
-                            text-decoration:none;
-                            border-radius:6px;
-                            font-weight:bold;
-                        "
-                    >
-                        Verify Email
-                    </a>
-                    <p style="margin-top:20px;">
-                        Or copy and paste this link into your browser:
-                    </p>
-                    <p>
-                        ${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}
-                    </p>
-                    <hr />
-                    <p>
-                        If you didn't create an account, you can safely ignore this email.
-                    </p>
-                    <p>
-                        Best regards,<br/>
-                        <strong>The Perplexity Team</strong>
-                    </p>
-                </div>
-            `,
-        });
+        try {
+            await sendEmail({
+                to: normalizedEmail,
+                subject: "Welcome to Perplexity!",
+                html: `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                        <h2>Welcome to Perplexity 🚀</h2>
+                        <p>Hi <strong>${normalizedUsername}</strong>,</p>
+                        <p>
+                            Thank you for registering with <strong>Perplexity</strong>.
+                            We're excited to have you on board!
+                        </p>
+                        <p>
+                            Please verify your email address by clicking the button below:
+                        </p>
+                        <a
+                            href="${verificationLink}"
+                            style="
+                                display:inline-block;
+                                padding:12px 24px;
+                                background:#4F46E5;
+                                color:#fff;
+                                text-decoration:none;
+                                border-radius:6px;
+                                font-weight:bold;
+                            "
+                        >
+                            Verify Email
+                        </a>
+                        <p style="margin-top:20px;">
+                            Or copy and paste this link into your browser:
+                        </p>
+                        <p>
+                            ${verificationLink}
+                        </p>
+                        <hr />
+                        <p>
+                            If you didn't create an account, you can safely ignore this email.
+                        </p>
+                        <p>
+                            Best regards,<br/>
+                            <strong>The Perplexity Team</strong>
+                        </p>
+                    </div>
+                `,
+            });
+        } catch (emailErr) {
+            console.error("⚠️ Failed to dispatch verification email:", emailErr.message);
+            console.log("\n");
+            console.log("🔗 LOCAL DEV VERIFICATION LINK (Click or paste to verify):");
+            console.log(verificationLink);
+            console.log("\n");
+
+            if (process.env.NODE_ENV !== "production") {
+                // In local development, auto-verify so testing is not blocked by email failures
+                newUser.verified = true;
+                await newUser.save();
+                console.log(`✅ [DEV MODE] User ${newUser.username} auto-verified for local development.`);
+            } else {
+                // In production, roll back the newly created user record
+                await userModel.findByIdAndDelete(newUser._id);
+                throw new Error(`Failed to send verification email: ${emailErr.message}`);
+            }
+        }
 
         // 5. Send structural clean success response back to frontend interceptors
         return res.status(201).json({
             success: true,
-            message: "User registered successfully",
+            message: newUser.verified 
+                ? "User registered and verified successfully!" 
+                : "User registered successfully! Please check your email for verification.",
             user: {
                 id: newUser._id,
                 username: newUser.username,
@@ -101,10 +181,17 @@ export const registerController = async (req, res) => {
         // Log the actual structural error for server-side troubleshooting
         console.error("Registration Controller Error:", error);
 
-        // Send a generic standardized failure JSON response that frontend toast loops map easily
+        if (error.code === 11000) {
+            return res.status(400).json({
+                success: false,
+                message: "User with this email or username already exists",
+                err: "duplicate key"
+            });
+        }
+
         return res.status(500).json({
             success: false,
-            message: error.message || "Something went wrong while registering the user configuration nodes.",
+            message: error.message || "Something went wrong while registering the user.",
             error: error.message || error
         });
     }
@@ -264,9 +351,10 @@ export const verifyEmail = async (req, res) => {
 export const loginController = async (req, res) => {
     try {
         const { email, password } = req.body;
+        const normalizedEmail = email ? email.toLowerCase().trim() : "";
 
         // 1. Fetch the user from the database
-        const user = await userModel.findOne({ email });
+        const user = await userModel.findOne({ email: normalizedEmail });
 
         // 2. If user doesn't exist, stop immediately
         if (!user) {
@@ -398,8 +486,10 @@ export const resendVerificationEmail = async (req, res) => {
             });
         }
 
+        const normalizedEmail = email.toLowerCase().trim();
+
         // 1. Find the user
-        const user = await userModel.findOne({ email });
+        const user = await userModel.findOne({ email: normalizedEmail });
 
         if (!user) {
             return res.status(404).json({
@@ -421,64 +511,46 @@ export const resendVerificationEmail = async (req, res) => {
         // 3. Generate a fresh verification token
         const emailVerificationToken = jwt.sign({
             email: user.email
-        }, process.env.JWT_SECRET, { expiresIn: "1h" }); // Good practice to give it an expiry time
+        }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
         const appBaseUrl = getBaseUrl(req);
+        const verificationLink = `${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}`;
 
         // 4. Send verification email
-        await sendEmail({
-            to: user.email,
-            subject: "Verify your email - Perplexity",
-            html: `
-                <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-                    <h2>Verify Your Email Address 🚀</h2>
+        try {
+            await sendEmail({
+                to: user.email,
+                subject: "Verify your email - Perplexity",
+                html: `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                        <h2>Verify Your Email Address 🚀</h2>
+                        <p>Hi <strong>${user.username}</strong>,</p>
+                        <p>You requested a new verification link for your <strong>Perplexity</strong> account.</p>
+                        <p>Please click the button below to verify your email address:</p>
+                        <a href="${verificationLink}" style="display:inline-block; padding:12px 24px; background:#4F46E5; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold;">Verify Email</a>
+                        <p style="margin-top:20px;">Or copy and paste this link into your browser:</p>
+                        <p>${verificationLink}</p>
+                    </div>
+                `,
+            });
+        } catch (emailErr) {
+            console.error("⚠️ Failed to dispatch resend verification email:", emailErr.message);
+            console.log("\n");
+            console.log("🔗 LOCAL DEV VERIFICATION LINK (Click or paste to verify):");
+            console.log(verificationLink);
+            console.log("\n");
 
-                    <p>Hi <strong>${user.username}</strong>,</p>
-
-                    <p>
-                        You requested a new verification link for your <strong>Perplexity</strong> account.
-                    </p>
-
-                    <p>
-                        Please click the button below to verify your email address:
-                    </p>
-
-                    <a
-                        href="${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}"
-                        style="
-                            display:inline-block;
-                            padding:12px 24px;
-                            background:#4F46E5;
-                            color:#fff;
-                            text-decoration:none;
-                            border-radius:6px;
-                            font-weight:bold;
-                        "
-                    >
-                        Verify Email
-                    </a>
-
-                    <p style="margin-top:20px;">
-                        Or copy and paste this link into your browser:
-                    </p>
-
-                    <p>
-                        ${appBaseUrl}/api/auth/verify-email?token=${emailVerificationToken}
-                    </p>
-
-                    <hr />
-
-                    <p>
-                        If you didn't make this request, you can safely ignore this email.
-                    </p>
-
-                    <p>
-                        Best regards,<br/>
-                        <strong>The Perplexity Team</strong>
-                    </p>
-                </div>
-            `,
-        });
+            if (process.env.NODE_ENV !== "production") {
+                user.verified = true;
+                await user.save();
+                return res.status(200).json({
+                    message: "User verified automatically for local development!",
+                    success: true
+                });
+            } else {
+                throw emailErr;
+            }
+        }
 
         return res.status(200).json({
             message: "Verification email sent successfully!",
@@ -488,7 +560,7 @@ export const resendVerificationEmail = async (req, res) => {
     } catch (error) {
         console.error("Resend Verification Email Error:", error);
         return res.status(500).json({
-            message: "An internal error occurred while trying to resend the email",
+            message: error.message || "An internal error occurred while trying to resend the email",
             success: false,
             error: error.message || error
         });
