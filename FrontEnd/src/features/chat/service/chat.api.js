@@ -1,11 +1,7 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_URL 
-    ? `${import.meta.env.VITE_API_URL}/api/chats` 
-    : "/api/chats";
-
 const api = axios.create({
-    baseURL,
+    baseURL: "/api/chats",
     withCredentials: true
 });
 

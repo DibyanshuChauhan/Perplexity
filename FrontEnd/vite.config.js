@@ -15,6 +15,8 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
+    port: 5173,
+    strictPort: true,
     proxy: {
       "/api": {
         target: "http://localhost:3000",
@@ -22,5 +24,9 @@ export default defineConfig({
         secure: false,
       },
     },
+  },
+  preview: {
+    port: 5173,
+    strictPort: true,
   },
 });

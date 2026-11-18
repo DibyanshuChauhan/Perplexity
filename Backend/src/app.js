@@ -13,7 +13,12 @@ const __dirname = path.dirname(__filename);
 const publicPath = path.join(__dirname, "../public");
 
 const app = express();
-const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000"
+];
 
 if (process.env.CLIENT_URL) {
     allowedOrigins.push(process.env.CLIENT_URL);
